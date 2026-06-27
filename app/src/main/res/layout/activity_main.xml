@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="系谱分析系统 v6.0 (Android)"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"/>
+
+    <Button
+        android:id="@+id/btnSelect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1. 选择输入数据库 (pedigree_input.db)" />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2. 开始计算 (20万规模约需10-30秒)"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="状态：等待操作...\n\n提示：计算过程中请勿退出APP，详细进度请在 Android Studio 的 Logcat 中查看 (过滤标签: PedigreeCalc)"
+        android:textSize="14sp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:textColor="#555555"
+        android:lineSpacingExtra="4dp"/>
+
+</LinearLayout>

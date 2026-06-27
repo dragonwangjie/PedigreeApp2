@@ -1,0 +1,22 @@
+# 忽略编译产物
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# 忽略 APK (GitHub Actions 已自动上传产物)
+*.apk
+*.aab
+
+# 忽略密钥库
+*.jks
+*.keystore
+
+# 忽略日志
+*.log

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">系谱分析</string>
+    <string name="btn_calculate">开始计算</string>
+    <string name="btn_demo">示例数据</string>
+    <string name="btn_view">查看结果</string>
+    <string name="status_ready">就绪</string>
+    <string name="status_calculating">计算中...</string>
+    <string name="status_done">计算完成</string>
+</resources>
