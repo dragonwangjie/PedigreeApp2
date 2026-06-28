@@ -13,6 +13,13 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "6.0"
+
+        // CMake 编译标志配置
+        externalNativeBuild {
+            cmake {
+                cFlags += listOf("-O3", "-std=c11")
+            }
+        }
     }
 
     // 全局的 externalNativeBuild 配置放在 android 级别
