@@ -14,22 +14,24 @@ android {
         versionCode = 1
         versionName = "6.0"
 
+        // 修复 1: 将 += 改为 =，解决 "Unresolved reference: +=" 错误
         ndk {
-            // Only build 64-bit ABI
             abiFilters = setOf("arm64-v8a")
+        }
+
+        // 修复 2: 将 arguments 移至 defaultConfig 内部的 externalNativeBuild 中
+        externalNativeBuild {
+            cmake {
+                arguments("-DCMAKE_C_FLAGS=-O3 -std=c11")
+            }
         }
     }
 
-    // Global externalNativeBuild configuration at android level
+    // 全局的 externalNativeBuild 仅保留 path 和 version
     externalNativeBuild {
         cmake {
-            // path expects a File in the Kotlin DSL
             path = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
-
-            // Pass C flags to CMake via arguments rather than mutating cFlags
-            // This sets the CMake variable CMAKE_C_FLAGS to include -O3 and -std=c11
-            arguments = listOf("-DCMAKE_C_FLAGS=-O3 -std=c11")
         }
     }
 
@@ -42,10 +44,12 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -57,7 +61,3 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 }
-
-
-
-
