@@ -14,12 +14,12 @@ android {
         versionCode = 1
         versionName = "6.0"
 
-        // 修复 1: 将 += 改为 =，解决 "Unresolved reference: +=" 错误
+        // 修复: 使用 mutableSetOf 替代 setOf，以匹配 DSL 期望的 MutableSet 类型
         ndk {
-            abiFilters = setOf("arm64-v8a")
+            abiFilters = mutableSetOf("arm64-v8a")
         }
 
-        // 修复 2: 将 arguments 移至 defaultConfig 内部的 externalNativeBuild 中
+        // CMake 编译参数配置
         externalNativeBuild {
             cmake {
                 arguments("-DCMAKE_C_FLAGS=-O3 -std=c11")
