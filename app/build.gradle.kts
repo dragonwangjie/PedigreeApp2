@@ -14,25 +14,23 @@ android {
         versionCode = 1
         versionName = "6.0"
 
-        // CMake 编译标志配置
-        externalNativeBuild {
-            cmake {
-                cFlags += listOf("-O3", "-std=c11")
-            }
+        ndk {
+            // Only build 64-bit ABI
+            abiFilters += setOf("arm64-v8a")
         }
     }
 
-    // 全局的 externalNativeBuild 配置放在 android 级别
+    // Global externalNativeBuild configuration at android level
     externalNativeBuild {
         cmake {
+            // path expects a File in the Kotlin DSL
             path = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
-        }
-    }
 
-    // 仅构建 64 位 ABI
-    ndk {
-        abiFilters += "arm64-v8a"
+            // Pass C flags to CMake via arguments rather than mutating cFlags
+            // This sets the CMake variable CMAKE_C_FLAGS to include -O3 and -std=c11
+            arguments += listOf("-DCMAKE_C_FLAGS=-O3 -std=c11")
+        }
     }
 
     buildTypes {
