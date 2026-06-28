@@ -60,4 +60,11 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // 添加 Material Design 3 (Compose) 依赖
+    implementation("androidx.compose.material3:material3:1.2.1")
+    
+    // 如果你正在使用 Jetpack Compose，通常还需要以下基础依赖：
+    implementation("androidx.compose.ui:ui:1.6.7")
+    implementation("androidx.activity:activity-compose:1.9.0")
 }
