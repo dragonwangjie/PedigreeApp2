@@ -8,6 +8,14 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "6.0"
+
+        externalNativeBuild { 
+            cmake { 
+                // 启用 C11 标准和最高优化级别
+                // 使用列表字符串正确追加标志
+                cFlags += listOf("-O3", "-std=c11") 
+            } 
+        }
     }
     
     // 仅构建 64 位 ABI 
