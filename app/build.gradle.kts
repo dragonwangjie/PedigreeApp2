@@ -13,19 +13,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "6.0"
-
-        // Configure C flags for native build (enable C11 and optimize)
-        externalNativeBuild {
-            cmake {
-                // append C flags
-                cFlags += listOf("-O3", "-std=c11")
-            }
-        }
-
-        // 仅构建 64 位 ABI
-        ndk {
-            abiFilters += "arm64-v8a"
-        }
     }
 
     // 全局的 externalNativeBuild 配置放在 android 级别
@@ -34,6 +21,11 @@ android {
             path = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
         }
+    }
+
+    // 仅构建 64 位 ABI
+    ndk {
+        abiFilters += "arm64-v8a"
     }
 
     buildTypes {
