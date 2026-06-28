@@ -16,7 +16,7 @@ android {
 
         ndk {
             // Only build 64-bit ABI
-            abiFilters += setOf("arm64-v8a")
+            abiFilters = setOf("arm64-v8a")
         }
     }
 
@@ -29,7 +29,7 @@ android {
 
             // Pass C flags to CMake via arguments rather than mutating cFlags
             // This sets the CMake variable CMAKE_C_FLAGS to include -O3 and -std=c11
-            arguments += listOf("-DCMAKE_C_FLAGS=-O3 -std=c11")
+            arguments = listOf("-DCMAKE_C_FLAGS=-O3 -std=c11")
         }
     }
 
