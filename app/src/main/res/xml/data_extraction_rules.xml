@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  data_extraction_rules.xml
+  Placeholder valid XML resource to fix merge error during CI.
+  Replace the contents below with your real extraction rules if needed.
+-->
+<rules>
+  <!-- Example rule entry. Modify according to your app's needs. -->
+  <rule id="example_rule">
+    <description>Placeholder extraction rule to satisfy Android resource naming requirements.</description>
+  </rule>
+</rules>
