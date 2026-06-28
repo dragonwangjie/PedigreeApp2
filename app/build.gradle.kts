@@ -14,9 +14,9 @@ android {
         versionCode = 1
         versionName = "6.0"
 
-        // 修复: 使用 mutableSetOf 替代 setOf，以匹配 DSL 期望的 MutableSet 类型
+        // 修复: 使用 += 追加元素到现有的 MutableSet 中，而不是使用 = 重新赋值
         ndk {
-            abiFilters = mutableSetOf("arm64-v8a")
+            abiFilters += "arm64-v8a"
         }
 
         // CMake 编译参数配置
