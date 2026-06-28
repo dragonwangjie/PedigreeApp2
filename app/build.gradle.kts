@@ -9,26 +9,26 @@ android {
         versionCode = 1
         versionName = "6.0"
 
-        externalNativeBuild { 
-            cmake { 
-                // 启用 C11 标准和最高优化级别
-                // 使用列表字符串正确追加标志
-                cFlags += listOf("-O3", "-std=c11") 
-            } 
+        // 仅构建 64 位 ABI
+        ndk {
+            // 使用 += 单个字符串追加，避免对不可变集合重新赋值
+            abiFilters += "arm64-v8a"
+        }
+
+        // 若需为特定构建变体传入 CMake 参数，使用 arguments 而不是直接修改 cFlags/cppFlags
+        externalNativeBuild {
+            cmake {
+                // 将 C 编译器标志通过 CMake 参数传入，避免 Kotlin DSL 的可变性问题
+                arguments += listOf("-DCMAKE_C_FLAGS=-O3 -std=c11")
+            }
         }
     }
-    
-    // 仅构建 64 位 ABI 
-    ndk { 
-        abiFilters += listOf("arm64-v8a") 
-    }
 
-    // 配置 CMake 编译原生代码
-    externalNativeBuild { 
-        cmake { 
-            // 在 Kotlin DSL 中，path 期望接收 String 类型
-            path = "src/main/cpp/CMakeLists.txt" 
-            version = "3.22.1" 
-        } 
+    // 全局的 externalNativeBuild 配置放在 android 级别
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
     }
 }
