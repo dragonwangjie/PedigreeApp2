@@ -14,6 +14,14 @@ android {
         versionCode = 1
         versionName = "6.0"
 
+        // Configure C flags for native build (enable C11 and optimize)
+        externalNativeBuild {
+            cmake {
+                // append C flags
+                cFlags += listOf("-O3", "-std=c11")
+            }
+        }
+
         // 仅构建 64 位 ABI
         ndk {
             abiFilters += "arm64-v8a"
