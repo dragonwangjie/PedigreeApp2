@@ -35,6 +35,17 @@ android {
         }
     }
 
+    // 1. 新增：签名配置（从环境变量读取，适配 GitHub Actions）
+    signingConfigs {
+        create("release") {
+            // 路径与 GitHub Actions 中 base64 解码生成的路径保持一致
+            storeFile = file("keystore.jks") 
+            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -42,6 +53,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // 2. 新增：将签名配置应用到 release 构建类型
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -64,7 +77,7 @@ dependencies {
     // 添加 Material Design 3 (Compose) 依赖
     implementation("androidx.compose.material3:material3:1.2.1")
     
-    // 如果你正在使用 Jetpack Compose，通常还需要以下基础依赖：
+    // Jetpack Compose 基础依赖
     implementation("androidx.compose.ui:ui:1.6.7")
     implementation("androidx.activity:activity-compose:1.9.0")
 }
