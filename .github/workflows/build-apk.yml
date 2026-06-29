@@ -1,15 +1,17 @@
 name: Build Android APK
 
 on:
-  # 1. 触发条件优化：保留手动触发，将自动触发改为仅当推送标签时（如 v1.0.0）
+  # 1. 触发条件：仅当推送标签时（如 v1.0.0）或手动触发
   push:
     tags:
       - 'v*'
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:  # 允许在 GitHub 页面手动触发
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # 赋予工作流创建 Release 和写入仓库内容的权限
 
     steps:
       - name: Checkout code
@@ -26,13 +28,23 @@ jobs:
         with:
           gradle-version: 8.2
 
-      # 2. 编译优化：增加 assembleRelease，用于生成正式发布的 APK
+      # 2. 核心修复：从 Secrets 恢复 Keystore 签名文件
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > app/keystore.jks
+
+      # 3. 编译优化：注入签名环境变量，并生成正式发布的 APK
       - name: Build Debug and Release APK
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug assembleRelease
+          ./gradlew assembleDebug assembleRelease --stacktrace --no-daemon
+        env:
+          # 将 GitHub Secrets 注入为环境变量，供 build.gradle 读取
+          SIGNING_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-      # 3. 保留 Debug 包作为构建产物（供开发者测试）
+      # 4. 保留 Debug 包作为构建产物（供开发者测试）
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -40,7 +52,7 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
 
-      # 4. 修复上传组件：替换为社区更主流、维护更活跃的 softprops/action-gh-release
+      # 5. 上传 Release APK 到 GitHub Release
       - name: Upload Release APK to GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
