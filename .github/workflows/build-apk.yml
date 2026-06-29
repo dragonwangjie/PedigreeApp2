@@ -28,20 +28,10 @@ jobs:
         with:
           gradle-version: 8.2
 
-      # 2. 核心修复：从 Secrets 恢复 Keystore 签名文件，并增加验证
-      - name: Decode and Verify Keystore
+      # 2. 核心修复：从 Secrets 恢复 Keystore 签名文件
+      - name: Decode Keystore
         run: |
-          echo "🔍 开始解码 keystore..."
           echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > app/keystore.jks
-          
-          echo "📝 检查解码后的文件信息："
-          ls -lh app/keystore.jks
-          
-          echo "🔎 检查文件类型："
-          file app/keystore.jks
-          
-          echo "✅ 尝试列出 keystore 内容以验证其完整性："
-          keytool -list -v -keystore app/keystore.jks -storepass ${{ secrets.KEY_STORE_PASSWORD }}
 
       # 3. 编译优化：使用 setup-gradle 提供的 gradle 命令，注入签名环境变量并生成 APK
       - name: Build Debug and Release APK
