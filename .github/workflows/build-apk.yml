@@ -41,7 +41,7 @@ jobs:
           file app/keystore.jks
           
           echo "✅ 尝试列出 keystore 内容以验证其完整性："
-          keytool -list -keystore app/keystore.jks -storepass ${{ secrets.KEY_STORE_PASSWORD }}
+          keytool -list -v -keystore app/keystore.jks -storepass ${{ secrets.KEY_STORE_PASSWORD }}
 
       # 3. 编译优化：使用 setup-gradle 提供的 gradle 命令，注入签名环境变量并生成 APK
       - name: Build Debug and Release APK
