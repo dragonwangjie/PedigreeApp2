@@ -43,6 +43,10 @@ android {
             storePassword = System.getenv("SIGNING_STORE_PASSWORD")
             keyAlias = System.getenv("SIGNING_KEY_ALIAS")
             keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+
+            // 进阶优化：显式启用 V1 和 V2 签名，确保在各类设备和应用商店的最大兼容性
+            enableV1Signing = true
+            enableV2Signing = true
         }
     }
 
@@ -69,7 +73,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.2.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
