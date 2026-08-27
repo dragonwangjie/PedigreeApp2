@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 底部导航颜色状态选择器：仿微信风格 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 选中项：微信绿 -->
+    <item android:state_checked="true" android:color="@color/wechat_green" />
+    <!-- 未选中项：灰色 -->
+    <item android:color="#999999" />
+</selector>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/nav_icon_home"
+        android:title="数据" />
+
+    <item
+        android:id="@+id/nav_calculate"
+        android:icon="@drawable/nav_icon_calculate"
+        android:title="计算" />
+
+    <item
+        android:id="@+id/nav_results"
+        android:icon="@drawable/nav_icon_results"
+        android:title="结果" />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/nav_icon_settings"
+        android:title="设置" />
+
+</menu>

@@ -1,0 +1,4 @@
+<resources>
+    <!-- 定义一个名为 activity_horizontal_margin 的尺寸资源 -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- 允许访问外部存储的根目录 -->
+    <external-path name="external" path="." />
+    <!-- 允许访问应用内部私有目录，防止导出内部 DB 时 FileProvider 崩溃 -->
+    <files-path name="internal_files" path="." />
+</paths>

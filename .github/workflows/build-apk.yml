@@ -1,0 +1,72 @@
+name: Build Android APK
+
+on:
+  # 1. 推送标签时触发（此时允许上传 Release）
+  push:
+    tags:
+      - 'v*'
+  # 2. 在 GitHub Release 页面创建版本时触发
+  release:
+    types: [created]
+  # 3. 允许在 GitHub 页面手动触发（此时仅构建，不上传 Release）
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 赋予工作流创建 Release 和写入仓库内容的权限
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # 使用官方 Gradle Action 配置缓存，自动读取 Wrapper 版本
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # 【核心步骤】从 Secrets 恢复 Keystore 签名文件
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > app/keystore.jks
+          ls -la app/keystore.jks
+
+      # 注入签名环境变量并生成 APK
+      - name: Build Debug and Release APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug assembleRelease --stacktrace --no-daemon
+        env:
+          SIGNING_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      # 保留 Debug 包作为构建产物（供开发者测试）
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pedigree-app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+
+      # 列出 Release 目录下的文件，确认 APK 是否生成
+      - name: List release APKs
+        run: |
+          ls -la app/build/outputs/apk/release || true
+
+      # 仅在推送 Tag 或创建 Release 时上传到 GitHub Release
+      - name: Upload Release APK to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: app/build/outputs/apk/release/*.apk
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
